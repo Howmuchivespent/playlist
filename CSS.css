@@ -1,4 +1,4 @@
-/* CSS.css — Option A (image qui suit le scroll) */
+/* CSS.css — Option A (image qui suit le scroll, plus de bandeau) */
 :root {
   --overlay: .45;          /* 0 = pas d’overlay, 0.6 = plus sombre */
   --cta: #00c6ff;
@@ -8,6 +8,9 @@
   --cardBorder: #ffffff44;
 }
 
+/* Fallback couleur au niveau html (au cas où l'image tarde) */
+html { background: #141e30; }
+
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 
@@ -16,10 +19,10 @@ body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--fg);
 
-  /* Fond: overlay + image sans 'fixed' (suit le scroll) */
+  /* Fond: overlay + image SANS 'fixed' (suit le scroll) */
   background:
     linear-gradient(rgba(0,0,0,var(--overlay)), rgba(0,0,0,var(--overlay))),
-    url("inafont.png?v=3") center/cover no-repeat;
+    url("inafont.png?v=4") center/cover no-repeat;
 }
 
 h1 {
@@ -92,7 +95,6 @@ input[type="search"] {
 .loading { opacity: .8; }
 .hidden { display: none !important; }
 
-/* Tweak mobile optionnel */
 @media (max-width: 480px) {
   .link-list a { min-width: 180px; padding: 10px 14px; }
 }
