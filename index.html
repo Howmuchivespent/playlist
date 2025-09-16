@@ -2,38 +2,67 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Mon premier site GitHub Pages</title>
+  <title>Songs</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #00c6ff, #0072ff);
+      background: linear-gradient(to right, #141e30, #243b55);
       color: white;
       text-align: center;
-      padding: 50px;
+      padding: 40px;
     }
     h1 {
-      font-size: 3em;
-      margin-bottom: 0.5em;
+      font-size: 2.5em;
+      margin-bottom: 30px;
     }
-    p {
-      font-size: 1.2em;
+    .link-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 0;
     }
-    .btn {
+    .link-list a {
       display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: white;
-      color: #0072ff;
-      border-radius: 10px;
+      min-width: 120px;
+      padding: 12px 20px;
+      background: #00c6ff;
+      color: white;
       text-decoration: none;
-      font-weight: bold;
+      border-radius: 10px;
+      font-size: 1em;
+      transition: 0.3s;
+    }
+    .link-list a:hover {
+      background: #0072ff;
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <h1>🚀🚀🚀!</h1>
-  <p>Ce site est hébergé gratuitement grâce à GitHub.</p>
-  <a class="btn" href="https://github.com/">Voir mon GitHub</a>
+  <h1>🎵 50 Songs</h1>
+  <div class="link-list" id="links"></div>
+
+  <script>
+    // Tableau des URLs correspondantes
+    const urls = [
+      "https://www.youtube.com/watch?v=N2l2bp6bL2s&list=RDN2l2bp6bL2s&start_radio=1",
+      "https://www.youtube.com/watch?v=wGWcimtfpX8&list=RDwGWcimtfpX8&start_radio=1",
+      "https://www.youtube.com/watch?v=jHjUHKdoaqI&list=RDjHjUHKdoaqI&start_radio=1",
+	  "https://www.youtube.com/watch?v=SMCd5zrsFpE&list=RDSMCd5zrsFpE&start_radio=1",
+      // ...
+      "https://exemple.com/song50"
+    ];
+
+    const container = document.getElementById("links");
+
+    urls.forEach((url, i) => {
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.textContent = "Song " + (i + 1);
+      container.appendChild(a);
+    });
+  </script>
 </body>
 </html>
-
