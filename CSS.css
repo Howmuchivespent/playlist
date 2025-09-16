@@ -1,0 +1,83 @@
+/* assets/styles.css */
+:root {
+  --bg1: #141e30;
+  --bg2: #243b55;
+  --cta: #00c6ff;
+  --ctaH: #0072ff;
+  --fg: #ffffff;
+  --muted: #ffffffcc;
+  --card: #ffffff22;
+  --cardBorder: #ffffff44;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--fg);
+  background: linear-gradient(to right, var(--bg1), var(--bg2));
+  text-align: center;
+  padding: 40px 20px;
+}
+
+h1 { font-size: 2.1rem; margin: 0 0 .4rem; }
+.small { opacity: .9; font-size: .95rem; margin: 0 0 16px; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 10px 0 20px;
+}
+
+input[type="search"] {
+  min-width: 260px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--cardBorder);
+  background: var(--card);
+  color: var(--fg);
+  outline: none;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--cardBorder);
+  background: var(--card);
+  color: var(--fg);
+  cursor: pointer;
+  transition: transform .15s ease, background .2s ease;
+}
+.btn:hover { transform: translateY(-1px); background: #ffffff33; }
+
+.link-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.link-list a {
+  display: inline-block;
+  min-width: 220px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: var(--cta);
+  color: #fff;
+  text-decoration: none;
+  transition: transform .15s ease, background .2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.link-list a:hover { background: var(--ctaH); transform: scale(1.03); }
+
+/* Optionnel: style "loading" discret */
+.loading { opacity: .8; }
+.hidden { display: none !important; }
