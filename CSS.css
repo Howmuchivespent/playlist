@@ -1,4 +1,4 @@
-/* CSS.css — Fond qui suit le scroll (zéro bandeau) */
+/* CSS.css — fond qui suit le scroll + fix barre basse */
 :root {
   --overlay: .45;          /* 0 = pas d’overlay, 0.6 = plus sombre */
   --cta: #00c6ff;
@@ -13,31 +13,35 @@ html { background: #141e30; }      /* fallback si l'image tarde */
 /* base */
 * { box-sizing: border-box; }
 html, body { min-height: 100%; min-height: 100dvh; }
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: var(--fg);
 
-  /* IMPORTANT : pas de background direct ici */
+  /* pas de background direct ici : on le met sur ::before */
   background: transparent;
   position: relative;      /* pour le ::before */
   z-index: 0;
+
+  /* évite la barre sous le dernier lien (au lieu d'une marge sur la grille) */
+  padding-bottom: 48px;
 }
 
-/* Le fond sur un calque derrière tout le contenu */
+/* Fond sur un calque qui s'étire avec la page (sans fixed) */
 body::before {
   content: "";
-  position: absolute;      /* suit la hauteur réelle de la page */
+  position: absolute;      /* suit la hauteur réelle du document */
   inset: 0;
   z-index: -1;
   pointer-events: none;
 
   background:
     linear-gradient(rgba(0,0,0,var(--overlay)), rgba(0,0,0,var(--overlay))),
-    url("inafont.png?v=5") center/cover no-repeat;  /* pas de 'fixed' */
+    url("inafont.png?v=6") center/cover no-repeat;
 }
 
-/* --- le reste de tes styles --- */
+/* --- contenu --- */
 h1 {
   font-size: 2.1rem;
   margin: 0 0 .4rem;
@@ -85,7 +89,7 @@ input[type="search"] {
   justify-content: center;
   gap: 14px;
   max-width: 980px;
-  margin: 0 auto 40px;
+  margin: 0 auto;          /* plus de marge basse ici -> padding sur body */
 }
 
 .link-list a {
@@ -108,7 +112,7 @@ input[type="search"] {
 .loading { opacity: .8; }
 .hidden { display: none !important; }
 
-/* Tweak mobile optionnel */
+/* Tweak mobile */
 @media (max-width: 480px) {
   .link-list a { min-width: 180px; padding: 10px 14px; }
 }
