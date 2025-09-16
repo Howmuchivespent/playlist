@@ -1,5 +1,5 @@
 // Javascript.js
-// ✅ Tes 60 URLs (watch/shorts/youtu.be/embed OK, même avec list=...).
+// ✅ Tes 60 URLs
 const urls = [
   "https://www.youtube.com/watch?v=N2l2bp6bL2s&list=RDN2l2bp6bL2s&start_radio=1",
   "https://www.youtube.com/watch?v=wGWcimtfpX8&list=RDwGWcimtfpX8&start_radio=1",
