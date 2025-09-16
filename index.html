@@ -1,68 +1,241 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Songs</title>
+  <meta charset="UTF-8" />
+  <title>Mes Songs (auto-titres YouTube)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    :root { --bg1:#141e30; --bg2:#243b55; --cta:#00c6ff; --ctaH:#0072ff; }
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #141e30, #243b55);
-      color: white;
-      text-align: center;
-      padding: 40px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: linear-gradient(to right, var(--bg1), var(--bg2));
+      color: #fff; text-align: center; padding: 40px 20px;
     }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 30px;
+    h1 { font-size: 2.2rem; margin-bottom: .6rem; }
+    .small { opacity: .85; font-size: .9rem; margin: 0 0 16px; }
+    .actions { margin-bottom: 18px; }
+    .btn {
+      display:inline-block; padding:10px 14px; border-radius:10px;
+      background:#ffffff22; color:#fff; text-decoration:none; border:1px solid #ffffff44;
+      cursor:pointer; user-select:none; transition:transform .15s ease, background .2s ease;
     }
+    .btn:hover { transform:translateY(-1px); background:#ffffff33; }
     .link-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      padding: 0;
+      display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:980px; margin:0 auto;
     }
     .link-list a {
-      display: inline-block;
-      min-width: 120px;
-      padding: 12px 20px;
-      background: #00c6ff;
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-      font-size: 1em;
-      transition: 0.3s;
+      display:inline-block; min-width:220px; padding:12px 18px; border-radius:12px;
+      background: var(--cta); color:#fff; text-decoration:none;
+      transition: transform .15s ease, background .2s ease;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
     }
-    .link-list a:hover {
-      background: #0072ff;
-      transform: scale(1.05);
-    }
+    .link-list a:hover { background: var(--ctaH); transform: scale(1.03); }
   </style>
 </head>
 <body>
-  <h1>🎵 50 Songs</h1>
+  <h1>🎵 Mes liens YouTube</h1>
+  <p class="small">Les titres se chargent automatiquement (cachés par ID vidéo).</p>
+  <div class="actions">
+    <button id="refresh" class="btn" type="button">🔄 Actualiser les titres</button>
+  </div>
   <div class="link-list" id="links"></div>
 
-  <script>
-    // Tableau des URLs correspondantes
-    const urls = [
-      "https://www.youtube.com/watch?v=N2l2bp6bL2s&list=RDN2l2bp6bL2s&start_radio=1",
-      "https://www.youtube.com/watch?v=wGWcimtfpX8&list=RDwGWcimtfpX8&start_radio=1",
-      "https://www.youtube.com/watch?v=jHjUHKdoaqI&list=RDjHjUHKdoaqI&start_radio=1",
-	  "https://www.youtube.com/watch?v=SMCd5zrsFpE&list=RDSMCd5zrsFpE&start_radio=1",
-      // ...
-      "https://exemple.com/song50"
+<script>
+  // ⚙️ Mets ici TES 60 URLs
+  const urls = [
+    "https://www.youtube.com/watch?v=N2l2bp6bL2s&list=RDN2l2bp6bL2s&start_radio=1",
+    "https://www.youtube.com/watch?v=wGWcimtfpX8&list=RDwGWcimtfpX8&start_radio=1",
+    "https://www.youtube.com/watch?v=jHjUHKdoaqI&list=RDjHjUHKdoaqI&start_radio=1",
+    "https://www.youtube.com/watch?v=SMCd5zrsFpE&list=RDSMCd5zrsFpE&start_radio=1",
+    "https://www.youtube.com/watch?v=yz8lllwvVaU&list=RDyz8lllwvVaU&start_radio=1", // Song 5 (problème)
+    "https://www.youtube.com/watch?v=BNV1rm16zhE&list=RDBNV1rm16zhE&start_radio=1",
+    "https://www.youtube.com/watch?v=r7TYA7UcQlE&list=RDr7TYA7UcQlE&start_radio=1",
+    "https://www.youtube.com/watch?v=mj4yh7YrwfE&list=RDmj4yh7YrwfE&start_radio=1",
+    "https://www.youtube.com/watch?v=CjAk_ut6nW0&list=RDCjAk_ut6nW0&start_radio=1",
+    "https://www.youtube.com/watch?v=_uu_izpVSEc&list=RD_uu_izpVSEc&start_radio=1",
+    "https://www.youtube.com/watch?v=sP0us82q1ck&list=RDsP0us82q1ck&start_radio=1",
+    "https://www.youtube.com/watch?v=nkGixIT4HdM&list=RDnkGixIT4HdM&start_radio=1",
+    "https://www.youtube.com/watch?v=14PLRhIEAy8&list=RD14PLRhIEAy8&start_radio=1",
+    "https://www.youtube.com/watch?v=X7d6Dt17yHk&list=RDX7d6Dt17yHk&start_radio=1",
+    "https://www.youtube.com/watch?v=VVRXyZ6B0Qw&list=RDVVRXyZ6B0Qw&start_radio=1",
+    "https://www.youtube.com/watch?v=cSlTR0ZVjGI&list=RDcSlTR0ZVjGI&start_radio=1",
+    "https://www.youtube.com/watch?v=L8gGHqPBuZM&list=RDL8gGHqPBuZM&start_radio=1",
+    "https://www.youtube.com/watch?v=9LEG2UNarP0&list=RD9LEG2UNarP0&start_radio=1",   // Song 18 (problème)
+    "https://www.youtube.com/watch?v=-oMZw8DQbaI&list=RD-oMZw8DQbaI&start_radio=1",
+    "https://www.youtube.com/watch?v=lukT_WB5IB0&list=RDlukT_WB5IB0&start_radio=1",
+    "https://www.youtube.com/watch?v=Rkt2OCOjVbA&list=RDRkt2OCOjVbA&start_radio=1",
+    "https://www.youtube.com/watch?v=0rFZYeoB8Uw&list=RD0rFZYeoB8Uw&start_radio=1",
+    "https://www.youtube.com/watch?v=HjYLY3BGDY4&list=RDHjYLY3BGDY4&start_radio=1",
+    "https://www.youtube.com/watch?v=zLrOS5oz6IQ&list=RDzLrOS5oz6IQ&start_radio=1",
+    "https://www.youtube.com/watch?v=Do1WeQd5Sk4&list=RDDo1WeQd5Sk4&start_radio=1",
+    "https://www.youtube.com/watch?v=0jv17p9DF6I&list=RD0jv17p9DF6I&start_radio=1",
+    "https://www.youtube.com/watch?v=x8RIixqumUc&list=RDx8RIixqumUc&start_radio=1",
+    "https://www.youtube.com/watch?v=3gOHvDP_vCs&list=RD3gOHvDP_vCs&start_radio=1",
+    "https://www.youtube.com/watch?v=GoLJJRIWCLU&list=RDGoLJJRIWCLU&start_radio=1",
+    "https://www.youtube.com/watch?v=Qb926yclzHg&list=RDQb926yclzHg&start_radio=1",
+    "https://www.youtube.com/watch?v=yziY689TBis&list=RDyziY689TBis&start_radio=1",
+    "https://www.youtube.com/watch?v=izToCCeLnNA&list=RDizToCCeLnNA&start_radio=1",
+    "https://www.youtube.com/watch?v=NTrm_idbhUk&list=RDNTrm_idbhUk&start_radio=1",
+    "https://www.youtube.com/watch?v=9DhnfLk7nwQ&list=RD9DhnfLk7nwQ&start_radio=1",
+    "https://www.youtube.com/watch?v=6lXMkqjJTNs&list=RD6lXMkqjJTNs&start_radio=1",
+    "https://www.youtube.com/watch?v=P-F7AS-Xhus&list=RDP-F7AS-Xhus&start_radio=1",
+    "https://www.youtube.com/watch?v=dYGKxxTXqSs&list=RDdYGKxxTXqSs&start_radio=1",
+    "https://www.youtube.com/watch?v=iJomDM9SNEM&list=RDiJomDM9SNEM&start_radio=1",
+    "https://www.youtube.com/watch?v=wmWdiebyHlY&list=RDwmWdiebyHlY&start_radio=1",
+    "https://www.youtube.com/watch?v=DY0wJiIuduM&list=RDDY0wJiIuduM&start_radio=1",
+    "https://www.youtube.com/watch?v=_ruxnfq7FC8&list=RD_ruxnfq7FC8&start_radio=1",
+    "https://www.youtube.com/watch?v=cT5GghQwhFw&list=RDcT5GghQwhFw&start_radio=1",
+    "https://www.youtube.com/watch?v=wAjHQXrIj9o&list=RDwAjHQXrIj9o&start_radio=1",
+    "https://www.youtube.com/watch?v=KyDov-QJFGE&list=RDKyDov-QJFGE&start_radio=1",
+    "https://www.youtube.com/watch?v=htk6MRjmcnQ&list=RDhtk6MRjmcnQ&start_radio=1",
+    "https://www.youtube.com/watch?v=vn7iOhMNUCs&list=RDvn7iOhMNUCs&start_radio=1",
+    "https://www.youtube.com/watch?v=aF93xhi2kqg&list=RDaF93xhi2kqg&start_radio=1",
+    "https://www.youtube.com/watch?v=aEvbBFV3zB4&list=RDaEvbBFV3zB4&start_radio=1",
+    "https://www.youtube.com/watch?v=2o5H8wIR8Go&list=RD2o5H8wIR8Go&start_radio=1",
+    "https://www.youtube.com/watch?v=2SUwOgmvzK4&list=RD2SUwOgmvzK4&start_radio=1",
+    "https://www.youtube.com/watch?v=gPDcwjJ8pLg&list=RDgPDcwjJ8pLg&start_radio=1",
+    "https://www.youtube.com/watch?v=v9V5aByfeCM&list=RDv9V5aByfeCM&start_radio=1",
+    "https://www.youtube.com/watch?v=Jnq9wPDoDKg&list=RDJnq9wPDoDKg&start_radio=1",
+    "https://www.youtube.com/watch?v=aCyGvGEtOwc&list=RDaCyGvGEtOwc&start_radio=1",
+    "https://www.youtube.com/watch?v=jyuRrNBtJIw&list=RDjyuRrNBtJIw&start_radio=1",
+    "https://www.youtube.com/watch?v=qv96yJYhk3M&list=RDqv96yJYhk3M&start_radio=1",
+    "https://www.youtube.com/watch?v=HEGRwUuWn64&list=RDHEGRwUuWn64&start_radio=1",
+    "https://www.youtube.com/watch?v=z41-ebanhB0&list=RDz41-ebanhB0&start_radio=1",
+    "https://www.youtube.com/watch?v=sEetXo3R-aM&list=RDsEetXo3R-aM&start_radio=1",
+    "https://www.youtube.com/watch?v=Oextk-If8HQ&list=RDOextk-If8HQ&start_radio=1",
+    "https://www.youtube.com/watch?v=VIDEOID50"
+  ];
+
+  const container = document.getElementById("links");
+
+  // --------- Utils: extraction ID & URL canonique ----------
+  function extractYouTubeId(raw) {
+    try {
+      const u = new URL(raw);
+      if (u.hostname.includes("youtu.be")) {
+        const p = u.pathname.split("/").filter(Boolean); return p[0] || null;
+      }
+      if (u.pathname.startsWith("/shorts/")) {
+        const p = u.pathname.split("/").filter(Boolean); return p[1] || p[0] || null;
+      }
+      const m = u.pathname.match(/\/embed\/([^/?#]+)/); if (m) return m[1];
+      if (u.searchParams.has("v")) return u.searchParams.get("v");
+      return null;
+    } catch { return null; }
+  }
+  function canonicalWatchUrl(raw) {
+    const id = extractYouTubeId(raw);
+    return id ? `https://www.youtube.com/watch?v=${id}` : raw;
+  }
+  function cacheKey(raw) {
+    const id = extractYouTubeId(raw);
+    return id ? `ytTitle:id:${id}` : `ytTitle:url:${raw}`;
+  }
+
+  // --------- Fetch helpers ----------
+  async function fetchJsonWithBackoff(url, tries = 3) {
+    let lastErr;
+    for (let attempt = 1; attempt <= tries; attempt++) {
+      try {
+        const resp = await fetch(url);
+        if (resp.ok) return resp.json();
+        if (resp.status === 429 || resp.status >= 500) {
+          const delay = 400 * attempt + Math.random() * 300;
+          await new Promise(r => setTimeout(r, delay));
+          lastErr = new Error(`HTTP ${resp.status}`); continue;
+        }
+        throw new Error(`HTTP ${resp.status}`);
+      } catch (e) {
+        lastErr = e;
+        const delay = 350 * attempt + Math.random() * 250;
+        await new Promise(r => setTimeout(r, delay));
+      }
+    }
+    throw lastErr;
+  }
+
+  async function fetchTitleFromProviders(rawUrl) {
+    const key = cacheKey(rawUrl);
+    const cached = localStorage.getItem(key);
+    if (cached) return { title: cached, provider: "cache" };
+
+    const canon = canonicalWatchUrl(rawUrl);
+    const providers = [
+      `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(canon)}`,
+      `https://www.youtube-nocookie.com/oembed?format=json&url=${encodeURIComponent(canon)}`,
+      `https://noembed.com/embed?url=${encodeURIComponent(canon)}` // tiers
     ];
 
-    const container = document.getElementById("links");
+    for (const p of providers) {
+      try {
+        const data = await fetchJsonWithBackoff(p, 3);
+        const title = data && data.title ? String(data.title) : "";
+        if (title) {
+          localStorage.setItem(key, title);
+          return { title, provider: p };
+        }
+      } catch (e) {
+        // continue to next provider
+      }
+    }
+    throw new Error("All providers failed");
+  }
 
-    urls.forEach((url, i) => {
-      const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.textContent = "Song " + (i + 1);
-      container.appendChild(a);
+  async function mapWithConcurrency(list, mapper, concurrency = 4) { // ↓ un poil la concurrence
+    const results = new Array(list.length);
+    let idx = 0;
+    const workers = Array.from({ length: concurrency }, async () => {
+      while (idx < list.length) {
+        const i = idx++;
+        try { results[i] = await mapper(list[i], i); }
+        catch (e) { results[i] = null; }
+      }
     });
-  </script>
+    await Promise.all(workers);
+    return results;
+  }
+
+  // --------- UI ----------
+  const anchors = urls.map((url, i) => {
+    const a = document.createElement("a");
+    a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.textContent = `Loading… (${i + 1})`;
+    container.appendChild(a);
+    return a;
+  });
+
+  (async () => {
+    await mapWithConcurrency(urls, async (url, i) => {
+      try {
+        const { title, provider } = await fetchTitleFromProviders(url);
+        const txt = title && title.trim() ? title : `Song ${i + 1}`;
+        // petit marqueur si fallback non YouTube
+        const usedNoembed = typeof provider === "string" && provider.includes("noembed.com");
+        anchors[i].textContent = usedNoembed ? `⚠️ ${txt}` : txt;
+        anchors[i].title = txt;
+        if (usedNoembed) {
+          // info console pour debug
+          console.info(`Noembed fallback used for index ${i + 1}:`, url);
+        }
+      } catch (e) {
+        const fallback = `Song ${i + 1}`;
+        anchors[i].textContent = fallback;
+        anchors[i].title = fallback;
+        console.warn(`Title fetch failed for index ${i + 1}:`, url, e);
+      }
+    }, 4);
+  })();
+
+  // Bouton "Actualiser" si tu en as un dans le HTML
+  const refreshBtn = document.getElementById("refresh");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", () => {
+      const keys = Object.keys(localStorage);
+      for (const k of keys) if (k.startsWith("ytTitle:")) localStorage.removeItem(k);
+      location.reload();
+    });
+  }
+</script>
+
 </body>
 </html>
