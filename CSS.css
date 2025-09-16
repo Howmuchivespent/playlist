@@ -1,35 +1,38 @@
-/* CSS.css */
+/* CSS.css — Option A (image qui suit le scroll) */
 :root {
-  --bg1: #141e30;
-  --bg2: #243b55;
-  --overlay: .45;      /* 0 = pas d’overlay, 0.6 = plus sombre */
+  --overlay: .45;          /* 0 = pas d’overlay, 0.6 = plus sombre */
   --cta: #00c6ff;
   --ctaH: #0072ff;
   --fg: #ffffff;
-  --muted: #ffffffcc;
   --card: #ffffff22;
   --cardBorder: #ffffff44;
 }
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--fg);
 
-  /* Fond image + overlay ajustable (v=2 pour bust le cache si tu remplaces l'image) */
+  /* Fond: overlay + image sans 'fixed' (suit le scroll) */
   background:
     linear-gradient(rgba(0,0,0,var(--overlay)), rgba(0,0,0,var(--overlay))),
-    url("inafont.png?v=2") center/cover no-repeat fixed;
+    url("inafont.png?v=3") center/cover no-repeat;
 }
 
-/* iOS/ mobile: éviter le "saut" du background fixé */
-@media (max-width: 768px){
-  body{ background-attachment: scroll; }
+h1 {
+  font-size: 2.1rem;
+  margin: 0 0 .4rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
 }
-
-h1 { font-size: 2.1rem; margin: 0 0 .4rem; text-shadow: 0 2px 10px rgba(0,0,0,.35); }
-.small { opacity: .9; font-size: .95rem; margin: 0 0 16px; text-shadow: 0 2px 10px rgba(0,0,0,.35); }
+.small {
+  opacity: .9;
+  font-size: .95rem;
+  margin: 0 0 16px;
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
 
 .actions {
   display: flex;
@@ -82,10 +85,14 @@ input[type="search"] {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  box-shadow: 0 6px 20px rgba(0,0,0,.25); /* lisibilité sur image */
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
 }
 .link-list a:hover { background: var(--ctaH); transform: scale(1.03); }
 
-/* Optionnel: style "loading" discret */
 .loading { opacity: .8; }
 .hidden { display: none !important; }
+
+/* Tweak mobile optionnel */
+@media (max-width: 480px) {
+  .link-list a { min-width: 180px; padding: 10px 14px; }
+}
