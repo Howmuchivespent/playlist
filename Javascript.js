@@ -1,5 +1,6 @@
-// Javascript.js
-// ✅ Tes 60 URLs existantes
+// Javascript.js — 2 sections (main + friend), compteur total + par section
+
+// ====== Section principale (tes 77 liens actuels) ======
 const urls = [
   "https://www.youtube.com/watch?v=N2l2bp6bL2s&list=RDN2l2bp6bL2s&start_radio=1",
   "https://www.youtube.com/watch?v=wGWcimtfpX8&list=RDwGWcimtfpX8&start_radio=1",
@@ -60,11 +61,9 @@ const urls = [
   "https://www.youtube.com/watch?v=HEGRwUuWn64&list=RDHEGRwUuWn64&start_radio=1",
   "https://www.youtube.com/watch?v=z41-ebanhB0&list=RDz41-ebanhB0&start_radio=1",
   "https://www.youtube.com/watch?v=sEetXo3R-aM&list=RDsEetXo3R-aM&start_radio=1",
-  "https://www.youtube.com/watch?v=Oextk-If8HQ&list=RDOextk-If8HQ&start_radio=1"
-];
+  "https://www.youtube.com/watch?v=Oextk-If8HQ&list=RDOextk-If8HQ&start_radio=1",
 
-// ➕ Tes 17 nouveaux liens (61 → 77)
-urls.push(
+  // Ajouts 61→77
   "https://www.youtube.com/watch?v=dO3HcD2yp0A&list=RDdO3HcD2yp0A&start_radio=1",
   "https://www.youtube.com/watch?v=T_lC2O1oIew&list=RDT_lC2O1oIew&start_radio=1",
   "https://www.youtube.com/watch?v=hTL1sgsFDt4&list=RDhTL1sgsFDt4&start_radio=1",
@@ -82,14 +81,30 @@ urls.push(
   "https://www.youtube.com/watch?v=so8V5dAli-Q&list=RDso8V5dAli-Q&start_radio=1",
   "https://www.youtube.com/watch?v=k0optPS9qrA&list=RDk0optPS9qrA&start_radio=1",
   "https://www.youtube.com/watch?v=sVx1mJDeUjY&list=RDsVx1mJDeUjY&start_radio=1"
-);
+];
 
-const container   = document.getElementById("links");
-const searchInput = document.getElementById("search");
-const refreshBtn  = document.getElementById("refresh");
+// ====== Section amie (colle ses liens ici) ======
+const friendUrls = [
+  // Exemples:
+  // "https://www.youtube.com/watch?v=XXXXXXXXXXX",
+  // "https://youtu.be/YYYYYYYYYYY",
+];
+// Si vide -> on masque la section
+const friendSectionEl = document.querySelector("section.friend");
+if (!friendUrls.length && friendSectionEl) friendSectionEl.style.display = "none";
 
-// 👉 Compteur auto dans le titre
-document.querySelector("h1")?.append(` — ${urls.length} tracks`);
+const mainContainer    = document.getElementById("links");
+const friendContainer  = document.getElementById("friend-links");
+const searchInput      = document.getElementById("search");
+const refreshBtn       = document.getElementById("refresh");
+const friendCountEl    = document.getElementById("friend-count");
+
+// 👉 Compteurs
+const total = urls.length + friendUrls.length;
+document.querySelector("h1")?.append(` — ${total} tracks`);
+if (friendCountEl && friendUrls.length) {
+  friendCountEl.textContent = `— ${friendUrls.length} tracks`;
+}
 
 // ---------- Utils: extraction ID & URL canonique ----------
 function extractYouTubeId(raw) {
@@ -180,29 +195,30 @@ async function mapWithConcurrency(list, mapper, concurrency = 4) {
   return results;
 }
 
-// ---------- UI build ----------
-const anchors = urls.map((url, i) => {
-  const a = document.createElement("a");
-  a.href = url;
-  a.target = "_blank";
-  a.rel = "noopener noreferrer";
-  a.textContent = `Loading… (${i + 1})`;
-  a.classList.add("loading");
-  container.appendChild(a);
-  return a;
-});
+// ---------- Render helpers ----------
+function buildAnchors(list, container) {
+  return list.map((url, i) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = `Loading…`;
+    a.classList.add("loading");
+    container.appendChild(a);
+    return a;
+  });
+}
 
-// Remplir les titres + dataset pour filtrage
-(async () => {
-  await mapWithConcurrency(urls, async (url, i) => {
+async function fillTitles(list, anchors) {
+  await mapWithConcurrency(list, async (url, i) => {
     try {
       const { title, provider } = await fetchTitleFromProviders(url);
-      const txt = title && title.trim() ? title : `Song ${i + 1}`;
+      const txt = title && title.trim() ? title : `Song`;
       anchors[i].textContent = (provider && String(provider).includes("noembed.com")) ? `⚠️ ${txt}` : txt;
       anchors[i].title = txt;
       anchors[i].dataset.title = txt.toLowerCase();
     } catch {
-      const fallback = `Song ${i + 1}`;
+      const fallback = `Song`;
       anchors[i].textContent = fallback;
       anchors[i].title = fallback;
       anchors[i].dataset.title = fallback.toLowerCase();
@@ -210,20 +226,38 @@ const anchors = urls.map((url, i) => {
       anchors[i].classList.remove("loading");
     }
   }, 4);
+}
+
+// ---------- Build both sections ----------
+const mainAnchors   = buildAnchors(urls, mainContainer);
+const friendAnchors = friendUrls.length ? buildAnchors(friendUrls, friendContainer) : [];
+
+(async () => {
+  await Promise.all([
+    fillTitles(urls, mainAnchors),
+    friendAnchors.length ? fillTitles(friendUrls, friendAnchors) : Promise.resolve()
+  ]);
 })();
 
-// Recherche live
+// ---------- Recherche (filtre sur les deux sections) ----------
 function applyFilter(q) {
   const needle = q.trim().toLowerCase();
-  anchors.forEach(a => {
+  [...mainAnchors, ...friendAnchors].forEach(a => {
     const t = a.dataset.title || a.textContent.toLowerCase();
     a.classList.toggle("hidden", needle && !t.includes(needle));
   });
 }
 searchInput?.addEventListener("input", (e) => applyFilter(e.target.value));
 
-// Bouton refresh (purge cache titres + reload)
+// ---------- Refresh (purge cache titres + reload) ----------
 refreshBtn?.addEventListener("click", () => {
   Object.keys(localStorage).forEach(k => { if (k.startsWith("ytTitle:")) localStorage.removeItem(k); });
   location.reload();
 });
+
+// (optionnel) Random
+// document.getElementById("random")?.addEventListener("click", () => {
+//   const all = [...urls, ...friendUrls];
+//   const i = Math.floor(Math.random() * all.length);
+//   window.open(all[i], "_blank", "noopener");
+// });
