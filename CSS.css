@@ -1,4 +1,4 @@
-/* CSS.css — fond qui suit le scroll + fix barre basse + header centré */
+/* CSS.css — fond scroll, fix barre, header centré + section amie (rose) */
 :root {
   --overlay: .45;          /* 0 = pas d’overlay, 0.6 = plus sombre */
   --cta: #00c6ff;
@@ -6,9 +6,14 @@
   --fg: #ffffff;
   --card: #ffffff22;
   --cardBorder: #ffffff44;
+
+  /* Section amie (rose) */
+  --ctaFriend: #ffd1dc;    /* rose demandé */
+  --ctaFriendH: #ffb6c9;   /* hover un peu plus foncé */
+  --fgFriend: #3a1f2b;     /* texte foncé pour le contraste */
 }
 
-html { background: #141e30; }      /* fallback si l'image tarde */
+html { background: #141e30; }
 
 /* base */
 * { box-sizing: border-box; }
@@ -21,7 +26,7 @@ body {
 
   /* pas de background direct ici : on le met sur ::before */
   background: transparent;
-  position: relative;      /* pour le ::before */
+  position: relative;
   z-index: 0;
 
   /* évite la petite barre sous le dernier lien */
@@ -31,22 +36,21 @@ body {
 /* Fond sur un calque qui s'étire avec la page (sans fixed) */
 body::before {
   content: "";
-  position: absolute;      /* suit la hauteur réelle du document */
+  position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-
   background:
     linear-gradient(rgba(0,0,0,var(--overlay)), rgba(0,0,0,var(--overlay))),
-    url("inafont.png?v=7") center/cover no-repeat;
+    url("inafont.png?v=8") center/cover no-repeat;
 }
 
 /* -------- Header centré -------- */
 header{
-  max-width: 980px;            /* même largeur que la grille */
-  margin: 24px auto 16px;      /* centre horizontalement */
-  text-align: center;          /* centre le texte */
-  padding: 0 16px;             /* petits bords sur écrans étroits */
+  max-width: 980px;
+  margin: 24px auto 16px;
+  text-align: center;
+  padding: 0 16px;
   display: block;
 }
 
@@ -67,7 +71,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: center;     /* s’assure que les boutons restent centrés */
+  justify-content: center;
   margin: 10px 0 20px;
 }
 
@@ -99,7 +103,7 @@ input[type="search"] {
   justify-content: center;
   gap: 14px;
   max-width: 980px;
-  margin: 0 auto;              /* plus de marge basse -> padding-bottom sur body */
+  margin: 0 auto;
 }
 
 .link-list a {
@@ -119,9 +123,35 @@ input[type="search"] {
 }
 .link-list a:hover { background: var(--ctaH); transform: scale(1.03); }
 
+/* -------- Section amie -------- */
+.friend{
+  max-width: 980px;
+  margin: 32px auto 0;
+  text-align: center;
+  padding: 0 16px;
+}
+.friend h2{
+  margin: 0 0 12px;
+  font-size: 1.35rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+.link-list--friend a{
+  background: var(--ctaFriend);
+  color: var(--fgFriend);
+}
+.link-list--friend a:hover{
+  background: var(--ctaFriendH);
+}
+
 /* états */
 .loading { opacity: .8; }
 .hidden { display: none !important; }
+
+/* Tweaks accessibilité */
+html, body { overflow-x: hidden; }
+a:focus-visible, .btn:focus-visible, input:focus-visible {
+  outline: 2px solid #fff; outline-offset: 2px;
+}
 
 /* Tweak mobile */
 @media (max-width: 480px) {
