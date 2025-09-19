@@ -1,4 +1,5 @@
 // Javascript.js — 2 sections (main + friend), compteur total + par section
+// (cache-bust: index.html -> <script src="Javascript.js?v=4" defer></script>)
 
 // ====== Section principale (tes 77 liens actuels) ======
 const urls = [
@@ -83,30 +84,21 @@ const urls = [
   "https://www.youtube.com/watch?v=sVx1mJDeUjY&list=RDsVx1mJDeUjY&start_radio=1"
 ];
 
-// ====== Section amie (colle ses liens ici) ======
+// ====== Section amie (tes 10 liens) ======
 const friendUrls = [
-  // Exemples:
-  // "https://www.youtube.com/watch?v=XXXXXXXXXXX",
-  // "https://youtu.be/YYYYYYYYYYY",
+  "https://www.youtube.com/watch?v=0bayqPO6I1U&list=RD0bayqPO6I1U&start_radio=1",
+  "https://www.youtube.com/watch?v=ZAt8oxY0GQo&list=RDZAt8oxY0GQo&start_radio=1",
+  "https://www.youtube.com/watch?v=G_JfKOjwzwo&list=RDG_JfKOjwzwo&start_radio=1",
+  "https://www.youtube.com/watch?v=NBZgirj_C2Y&list=RDNBZgirj_C2Y&start_radio=1",
+  "https://www.youtube.com/watch?v=k-K28-A4fBc&list=RDk-K28-A4fBc&start_radio=1",
+  "https://www.youtube.com/watch?v=cZgUiR31m-Y&list=RDcZgUiR31m-Y&start_radio=1",
+  "https://www.youtube.com/watch?v=s1A3X_VA-us&list=RDs1A3X_VA-us&start_radio=1",
+  "https://www.youtube.com/watch?v=feLsyQ_homk&list=RDfeLsyQ_homk&start_radio=1",
+  "https://www.youtube.com/watch?v=feLsyQ_homk&list=RDfeLsyQ_homk&start_radio=1", // duplicate fourni
+  "https://www.youtube.com/watch?v=u8XmnoqSmyw&list=RDu8XmnoqSmyw&start_radio=1"
 ];
-// Si vide -> on masque la section
-const friendSectionEl = document.querySelector("section.friend");
-if (!friendUrls.length && friendSectionEl) friendSectionEl.style.display = "none";
 
-const mainContainer    = document.getElementById("links");
-const friendContainer  = document.getElementById("friend-links");
-const searchInput      = document.getElementById("search");
-const refreshBtn       = document.getElementById("refresh");
-const friendCountEl    = document.getElementById("friend-count");
-
-// 👉 Compteurs
-const total = urls.length + friendUrls.length;
-document.querySelector("h1")?.append(` — ${total} tracks`);
-if (friendCountEl && friendUrls.length) {
-  friendCountEl.textContent = `— ${friendUrls.length} tracks`;
-}
-
-// ---------- Utils: extraction ID & URL canonique ----------
+// --- Déduplication par URL canonique (évite les doublons visibles) ---
 function extractYouTubeId(raw) {
   try {
     const u = new URL(raw);
@@ -128,9 +120,24 @@ function canonicalWatchUrl(raw) {
   const id = extractYouTubeId(raw);
   return id ? `https://www.youtube.com/watch?v=${id}` : raw;
 }
-function cacheKey(raw) {
-  const id = extractYouTubeId(raw);
-  return id ? `ytTitle:id:${id}` : `ytTitle:url:${raw}`;
+const dedupByCanon = (arr) => [...new Map(arr.map(u => [canonicalWatchUrl(u), u])).values()];
+const friendList = dedupByCanon(friendUrls); // <- supprime le doublon feLsyQ_homk
+
+// Si vide -> on masque la section
+const friendSectionEl = document.querySelector("section.friend");
+if (!friendList.length && friendSectionEl) friendSectionEl.style.display = "none";
+
+const mainContainer    = document.getElementById("links");
+const friendContainer  = document.getElementById("friend-links");
+const searchInput      = document.getElementById("search");
+const refreshBtn       = document.getElementById("refresh");
+const friendCountEl    = document.getElementById("friend-count");
+
+// 👉 Compteurs
+const total = urls.length + friendList.length;
+document.querySelector("h1")?.append(` — ${total} tracks`);
+if (friendCountEl && friendList.length) {
+  friendCountEl.textContent = `— ${friendList.length} tracks`;
 }
 
 // ---------- Fetch helpers ----------
@@ -157,7 +164,11 @@ async function fetchJsonWithBackoff(url, tries = 3) {
 }
 
 async function fetchTitleFromProviders(rawUrl) {
-  const key = cacheKey(rawUrl);
+  const key = (function cacheKey(raw) {
+    const id = extractYouTubeId(raw);
+    return id ? `ytTitle:id:${id}` : `ytTitle:url:${raw}`;
+  })(rawUrl);
+
   const cached = localStorage.getItem(key);
   if (cached) return { title: cached, provider: "cache" };
 
@@ -197,7 +208,7 @@ async function mapWithConcurrency(list, mapper, concurrency = 4) {
 
 // ---------- Render helpers ----------
 function buildAnchors(list, container) {
-  return list.map((url, i) => {
+  return list.map((url) => {
     const a = document.createElement("a");
     a.href = url;
     a.target = "_blank";
@@ -230,12 +241,12 @@ async function fillTitles(list, anchors) {
 
 // ---------- Build both sections ----------
 const mainAnchors   = buildAnchors(urls, mainContainer);
-const friendAnchors = friendUrls.length ? buildAnchors(friendUrls, friendContainer) : [];
+const friendAnchors = friendList.length ? buildAnchors(friendList, friendContainer) : [];
 
 (async () => {
   await Promise.all([
     fillTitles(urls, mainAnchors),
-    friendAnchors.length ? fillTitles(friendUrls, friendAnchors) : Promise.resolve()
+    friendAnchors.length ? fillTitles(friendList, friendAnchors) : Promise.resolve()
   ]);
 })();
 
@@ -255,9 +266,9 @@ refreshBtn?.addEventListener("click", () => {
   location.reload();
 });
 
-// (optionnel) Random
+// // (optionnel) Random sur toutes les sections
 // document.getElementById("random")?.addEventListener("click", () => {
-//   const all = [...urls, ...friendUrls];
+//   const all = [...urls, ...friendList];
 //   const i = Math.floor(Math.random() * all.length);
 //   window.open(all[i], "_blank", "noopener");
 // });
