@@ -5,14 +5,15 @@
   <meta charset="UTF-8" />
   <title>Karma's playlist</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#141e30" />
 
   <!-- Perf: pré-connexion vers les providers -->
-  <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="preconnect" href="https://www.youtube-nocookie.com">
-  <link rel="preconnect" href="https://noembed.com">
+  <link rel="preconnect" href="https://www.youtube.com" crossorigin>
+  <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin>
+  <link rel="preconnect" href="https://noembed.com" crossorigin>
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="CSS.css?v=6">
+  <!-- Styles (cache-busting) -->
+  <link rel="stylesheet" href="CSS.css?v=7">
 
   <!-- Favicon -->
   <link rel="icon" href="inafont.png" type="image/png" />
@@ -21,7 +22,9 @@
   <meta property="og:title" content="𝕶𝖆𝖗𝖒𝖆'𝖘 𝕻𝖑𝖆𝖞𝖑𝖎𝖘𝖙" />
   <meta property="og:image" content="https://howmuchivespent.github.io/playlist/inafont.png" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://howmuchivespent.github.io/playlist/" />
   <meta name="twitter:card" content="summary_large_image" />
+  <!-- <meta name="description" content="100 Player's Playlist — hommage Genshin Impact."> -->
 </head>
 <body>
   <header>
@@ -29,11 +32,12 @@
     <p class="small">
       Thanks to everyone who participated, I really enjoyed chatting with you guys.<br />
       Special mention to: ✦ golyubka ✦ Nina ✦ Thumbelina ✦ Ciaratta ✦ KittyKaty ✦ Mamo ✦ Lillyfee ✦ Istill ✦ Ray ✦ dragonfly ✦.<br />
-    𖤐
+      𖤐
     </p>
     <div class="actions">
-      <input id="search" type="search" placeholder="Search 😎" aria-label="Recherche" />
+      <input id="search" type="search" placeholder="Search 😎" aria-label="Search" />
       <button id="refresh" class="btn" type="button">🔄 Refresh</button>
+      <!-- (optionnel) <button id="random" class="btn" type="button">🎲 Random</button> -->
     </div>
   </header>
 
@@ -42,20 +46,7 @@
   </main>
 
   <noscript>Active JavaScript pour charger les titres YouTube.</noscript>
-  <script src="Javascript.js" defer></script>
+  <!-- JS (cache-busting) -->
+  <script src="Javascript.js?v=2" defer></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
