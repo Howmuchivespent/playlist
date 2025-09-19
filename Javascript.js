@@ -1,5 +1,5 @@
 // Javascript.js
-// ✅ Tes 60 URLs
+// ✅ Tes 60 URLs existantes
 const urls = [
   "https://www.youtube.com/watch?v=N2l2bp6bL2s&list=RDN2l2bp6bL2s&start_radio=1",
   "https://www.youtube.com/watch?v=wGWcimtfpX8&list=RDwGWcimtfpX8&start_radio=1",
@@ -63,9 +63,33 @@ const urls = [
   "https://www.youtube.com/watch?v=Oextk-If8HQ&list=RDOextk-If8HQ&start_radio=1"
 ];
 
+// ➕ Tes 17 nouveaux liens (61 → 77)
+urls.push(
+  "https://www.youtube.com/watch?v=dO3HcD2yp0A&list=RDdO3HcD2yp0A&start_radio=1",
+  "https://www.youtube.com/watch?v=T_lC2O1oIew&list=RDT_lC2O1oIew&start_radio=1",
+  "https://www.youtube.com/watch?v=hTL1sgsFDt4&list=RDhTL1sgsFDt4&start_radio=1",
+  "https://www.youtube.com/watch?v=S3ncfrQPpjs&list=RDS3ncfrQPpjs&start_radio=1",
+  "https://www.youtube.com/watch?v=iE0l8Tx62DE&list=RDiE0l8Tx62DE&start_radio=1",
+  "https://www.youtube.com/watch?v=GR3Liudev18&list=RDGR3Liudev18&start_radio=1",
+  "https://www.youtube.com/watch?v=oFmup8lxUHw&list=RDoFmup8lxUHw&start_radio=1",
+  "https://www.youtube.com/watch?v=lZp96uELegI&list=RDlZp96uELegI&start_radio=1",
+  "https://www.youtube.com/watch?v=stBzOAR5ers&list=RDstBzOAR5ers&start_radio=1",
+  "https://www.youtube.com/watch?v=pQEYSptbXh4&list=RDpQEYSptbXh4&start_radio=1",
+  "https://www.youtube.com/watch?v=1o00J04ThXQ&list=RD1o00J04ThXQ&start_radio=1",
+  "https://www.youtube.com/watch?v=vGuJuW0bDWA&list=RDvGuJuW0bDWA&start_radio=1",
+  "https://www.youtube.com/watch?v=cADH06lKVNA&list=RDcADH06lKVNA&start_radio=1",
+  "https://www.youtube.com/watch?v=KmUMvShEq-E&list=RDKmUMvShEq-E&start_radio=1",
+  "https://www.youtube.com/watch?v=so8V5dAli-Q&list=RDso8V5dAli-Q&start_radio=1",
+  "https://www.youtube.com/watch?v=k0optPS9qrA&list=RDk0optPS9qrA&start_radio=1",
+  "https://www.youtube.com/watch?v=sVx1mJDeUjY&list=RDsVx1mJDeUjY&start_radio=1"
+);
+
 const container   = document.getElementById("links");
 const searchInput = document.getElementById("search");
 const refreshBtn  = document.getElementById("refresh");
+
+// 👉 Compteur auto dans le titre
+document.querySelector("h1")?.append(` — ${urls.length} tracks`);
 
 // ---------- Utils: extraction ID & URL canonique ----------
 function extractYouTubeId(raw) {
@@ -137,9 +161,7 @@ async function fetchTitleFromProviders(rawUrl) {
         localStorage.setItem(key, title);
         return { title, provider: p };
       }
-    } catch {
-      // try next
-    }
+    } catch { /* try next */ }
   }
   throw new Error("All providers failed");
 }
