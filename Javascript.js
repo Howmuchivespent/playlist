@@ -1,7 +1,7 @@
-// Javascript.js — 2 sections (main + friend), compteur total + par section
-// (cache-bust: index.html -> <script src="Javascript.js?v=5" defer></script>)
+// Javascript.js — 2 sections (main + friend), recherche, refresh cache, back-to-top
+// (cache-bust dans index.html -> <script src="Javascript.js?v=6" defer></script>)
 
-// ====== Section principale (tes 77 liens actuels + 10 nouveaux = 87) ======
+// ====== Section principale (tes liens bleus) ======
 const urls = [
   "https://www.youtube.com/watch?v=N2l2bp6bL2s&list=RDN2l2bp6bL2s&start_radio=1",
   "https://www.youtube.com/watch?v=wGWcimtfpX8&list=RDwGWcimtfpX8&start_radio=1",
@@ -83,7 +83,7 @@ const urls = [
   "https://www.youtube.com/watch?v=k0optPS9qrA&list=RDk0optPS9qrA&start_radio=1",
   "https://www.youtube.com/watch?v=sVx1mJDeUjY&list=RDsVx1mJDeUjY&start_radio=1",
 
-  // ➕ Ajouts 78→87
+  // Ajouts 78→87
   "https://www.youtube.com/watch?v=WhQxRa13CX0&list=RDWhQxRa13CX0&start_radio=1",
   "https://www.youtube.com/watch?v=laXY5e5JaV0&list=RDlaXY5e5JaV0&start_radio=1",
   "https://www.youtube.com/watch?v=9-LI98Q-rsg&list=RD9-LI98Q-rsg&start_radio=1",
@@ -93,10 +93,16 @@ const urls = [
   "https://www.youtube.com/watch?v=0kxnJVRiDX4&list=RD0kxnJVRiDX4&start_radio=1",
   "https://www.youtube.com/watch?v=n2hJA78YuWw&list=RDn2hJA78YuWw&start_radio=1",
   "https://www.youtube.com/watch?v=3kMbTzomh94&list=RD3kMbTzomh94&start_radio=1",
-  "https://www.youtube.com/watch?v=COaitAjBqO4&list=RDCOaitAjBqO4&start_radio=1"
+  "https://www.youtube.com/watch?v=COaitAjBqO4&list=RDCOaitAjBqO4&start_radio=1",
+
+  // Ajouts 88→91 (NOUVEAUX)
+  "https://www.youtube.com/watch?v=9iV-RmWapk8&list=RD9iV-RmWapk8&start_radio=1",
+  "https://www.youtube.com/watch?v=FtutLA63Cp8&list=RDFtutLA63Cp8&start_radio=1",
+  "https://www.youtube.com/watch?v=WkdQhfDRBKs&list=RDWkdQhfDRBKs&start_radio=1",
+  "https://www.youtube.com/watch?v=1Hsj3oYhsbk&list=RD1Hsj3oYhsbk&start_radio=1"
 ];
 
-// ====== Section amie (tes 10 liens) ======
+// ====== Section amie (Catloaf) ======
 const friendUrls = [
   "https://www.youtube.com/watch?v=0bayqPO6I1U&list=RD0bayqPO6I1U&start_radio=1",
   "https://www.youtube.com/watch?v=ZAt8oxY0GQo&list=RDZAt8oxY0GQo&start_radio=1",
@@ -133,17 +139,17 @@ function canonicalWatchUrl(raw) {
   return id ? `https://www.youtube.com/watch?v=${id}` : raw;
 }
 const dedupByCanon = (arr) => [...new Map(arr.map(u => [canonicalWatchUrl(u), u])).values()];
-const friendList = dedupByCanon(friendUrls); // <- supprime le doublon feLsyQ_homk
+const friendList = dedupByCanon(friendUrls); // supprime le doublon feLsyQ_homk
 
-// Si vide -> on masque la section
+// Si vide -> on masque la section amie
 const friendSectionEl = document.querySelector("section.friend");
 if (!friendList.length && friendSectionEl) friendSectionEl.style.display = "none";
 
-const mainContainer    = document.getElementById("links");
-const friendContainer  = document.getElementById("friend-links");
-const searchInput      = document.getElementById("search");
-const refreshBtn       = document.getElementById("refresh");
-const friendCountEl    = document.getElementById("friend-count");
+const mainContainer   = document.getElementById("links");
+const friendContainer = document.getElementById("friend-links");
+const searchInput     = document.getElementById("search");
+const refreshBtn      = document.getElementById("refresh");
+const friendCountEl   = document.getElementById("friend-count");
 
 // 👉 Compteurs
 const total = urls.length + friendList.length;
@@ -175,12 +181,13 @@ async function fetchJsonWithBackoff(url, tries = 3) {
   throw lastErr;
 }
 
-async function fetchTitleFromProviders(rawUrl) {
-  const key = (function cacheKey(raw) {
-    const id = extractYouTubeId(raw);
-    return id ? `ytTitle:id:${id}` : `ytTitle:url:${raw}`;
-  })(rawUrl);
+function cacheKey(raw) {
+  const id = extractYouTubeId(raw);
+  return id ? `ytTitle:id:${id}` : `ytTitle:url:${raw}`;
+}
 
+async function fetchTitleFromProviders(rawUrl) {
+  const key = cacheKey(rawUrl);
   const cached = localStorage.getItem(key);
   if (cached) return { title: cached, provider: "cache" };
 
@@ -277,27 +284,17 @@ refreshBtn?.addEventListener("click", () => {
   Object.keys(localStorage).forEach(k => { if (k.startsWith("ytTitle:")) localStorage.removeItem(k); });
   location.reload();
 });
+
 // --- Back to top ---
 const backBtn = document.getElementById("backToTop");
-
 function toggleBackBtn(){
   if (!backBtn) return;
   backBtn.classList.toggle("show", window.scrollY > 420);
 }
 window.addEventListener("scroll", toggleBackBtn, { passive: true });
 window.addEventListener("load", toggleBackBtn);
-
 backBtn?.addEventListener("click", () => {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduce) { window.scrollTo(0, 0); }
-  else { window.scrollTo({ top: 0, behavior: "smooth" }); }
+  if (reduce) window.scrollTo(0, 0);
+  else window.scrollTo({ top: 0, behavior: "smooth" });
 });
-
-
-// // (optionnel) Random sur toutes les sections
-// document.getElementById("random")?.addEventListener("click", () => {
-//   const all = [...urls, ...friendList];
-//   const i = Math.floor(Math.random() * all.length);
-//   window.open(all[i], "_blank", "noopener");
-// });
-
