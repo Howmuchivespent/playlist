@@ -277,6 +277,22 @@ refreshBtn?.addEventListener("click", () => {
   Object.keys(localStorage).forEach(k => { if (k.startsWith("ytTitle:")) localStorage.removeItem(k); });
   location.reload();
 });
+// --- Back to top ---
+const backBtn = document.getElementById("backToTop");
+
+function toggleBackBtn(){
+  if (!backBtn) return;
+  backBtn.classList.toggle("show", window.scrollY > 420);
+}
+window.addEventListener("scroll", toggleBackBtn, { passive: true });
+window.addEventListener("load", toggleBackBtn);
+
+backBtn?.addEventListener("click", () => {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { window.scrollTo(0, 0); }
+  else { window.scrollTo({ top: 0, behavior: "smooth" }); }
+});
+
 
 // // (optionnel) Random sur toutes les sections
 // document.getElementById("random")?.addEventListener("click", () => {
@@ -284,3 +300,4 @@ refreshBtn?.addEventListener("click", () => {
 //   const i = Math.floor(Math.random() * all.length);
 //   window.open(all[i], "_blank", "noopener");
 // });
+
