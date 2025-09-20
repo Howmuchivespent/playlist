@@ -1,7 +1,7 @@
 // Javascript.js — 2 sections (main + friend), compteur total + par section
-// (cache-bust: index.html -> <script src="Javascript.js?v=4" defer></script>)
+// (cache-bust: index.html -> <script src="Javascript.js?v=5" defer></script>)
 
-// ====== Section principale (tes 77 liens actuels) ======
+// ====== Section principale (tes 77 liens actuels + 10 nouveaux = 87) ======
 const urls = [
   "https://www.youtube.com/watch?v=N2l2bp6bL2s&list=RDN2l2bp6bL2s&start_radio=1",
   "https://www.youtube.com/watch?v=wGWcimtfpX8&list=RDwGWcimtfpX8&start_radio=1",
@@ -81,7 +81,19 @@ const urls = [
   "https://www.youtube.com/watch?v=KmUMvShEq-E&list=RDKmUMvShEq-E&start_radio=1",
   "https://www.youtube.com/watch?v=so8V5dAli-Q&list=RDso8V5dAli-Q&start_radio=1",
   "https://www.youtube.com/watch?v=k0optPS9qrA&list=RDk0optPS9qrA&start_radio=1",
-  "https://www.youtube.com/watch?v=sVx1mJDeUjY&list=RDsVx1mJDeUjY&start_radio=1"
+  "https://www.youtube.com/watch?v=sVx1mJDeUjY&list=RDsVx1mJDeUjY&start_radio=1",
+
+  // ➕ Ajouts 78→87
+  "https://www.youtube.com/watch?v=WhQxRa13CX0&list=RDWhQxRa13CX0&start_radio=1",
+  "https://www.youtube.com/watch?v=laXY5e5JaV0&list=RDlaXY5e5JaV0&start_radio=1",
+  "https://www.youtube.com/watch?v=9-LI98Q-rsg&list=RD9-LI98Q-rsg&start_radio=1",
+  "https://www.youtube.com/watch?v=-NWypO7QwUE&list=RD-NWypO7QwUE&start_radio=1",
+  "https://www.youtube.com/watch?v=TmIwm5RElRs&list=RDTmIwm5RElRs&start_radio=1",
+  "https://www.youtube.com/watch?v=R1nFAjUM8W8&list=RDR1nFAjUM8W8&start_radio=1",
+  "https://www.youtube.com/watch?v=0kxnJVRiDX4&list=RD0kxnJVRiDX4&start_radio=1",
+  "https://www.youtube.com/watch?v=n2hJA78YuWw&list=RDn2hJA78YuWw&start_radio=1",
+  "https://www.youtube.com/watch?v=3kMbTzomh94&list=RD3kMbTzomh94&start_radio=1",
+  "https://www.youtube.com/watch?v=COaitAjBqO4&list=RDCOaitAjBqO4&start_radio=1"
 ];
 
 // ====== Section amie (tes 10 liens) ======
