@@ -163,6 +163,30 @@ const tracks = [
 
 document.getElementById("recipient-name").textContent = name;
 
+// Particules flottantes en fond, purement décoratif
+const particlesEl = document.getElementById("particles");
+const PARTICLE_COUNT = 22;
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  const p = document.createElement("span");
+  p.className = "particle";
+
+  const size = 4 + Math.random() * 10;       // 4px à 14px
+  const left = Math.random() * 100;          // position horizontale de départ
+  const drift = (Math.random() - 0.5) * 200; // dérive horizontale en px pendant la montée
+  const duration = 14 + Math.random() * 16;  // 14s à 30s pour traverser l'écran
+  const delay = Math.random() * duration;    // décale le départ pour éviter l'effet "vague"
+
+  p.style.width = `${size}px`;
+  p.style.height = `${size}px`;
+  p.style.left = `${left}%`;
+  p.style.setProperty("--drift", `${drift}px`);
+  p.style.animationDuration = `${duration}s`;
+  p.style.animationDelay = `-${delay}s`;
+
+  particlesEl.appendChild(p);
+}
+
 const listEl = document.getElementById("tracklist");
 
 function durationToSeconds(d) {
