@@ -36,25 +36,25 @@ const tracks = [
   {
     type: "local",
     title: "2. Gods Garden",
-    artist: "Nom de l'artiste",
+    artist: "Dusqk",
     src: "songs%20local/2.%20Gods%20Garden.mp3"
   },
   {
     type: "local",
     title: "Caught up (in circles)",
-    artist: "Nom de l'artiste",
+    artist: "Syzy",
     src: "songs%20local/Caught%20up%20(in%20circles).mp3"
   },
   {
     type: "local",
     title: "VAMP MANSION",
     artist: "DJ YUNG VAMP",
-    src: "songs%20local/DJ%20YUNG%20VAMP%20-%20VAMP%20MANSION.wav"
+    src: "songs%20local/DJ%20YUNG%20VAMP%20-%20VAMP%20MANSION.mp3"
   },
   {
     type: "local",
     title: "GET OUT OF MY HEAD",
-    artist: "Nom de l'artiste",
+    artist: "NO SAUCE",
     src: "songs%20local/GET%20OUT%20OF%20MY%20HEAD.mp3"
   },
   {
@@ -66,7 +66,7 @@ const tracks = [
   {
     type: "local",
     title: "Holy Smokes (feat. Lil Uzi Vert)",
-    artist: "Nom de l'artiste",
+    artist: "Trippie Redd",
     src: "songs%20local/Holy%20Smokes%20(feat.%20Lil%20Uzi%20Vert).mp3"
   },
   {
@@ -78,13 +78,13 @@ const tracks = [
   {
     type: "local",
     title: "Light Again [Prod. Take A Daytrip]",
-    artist: "Nom de l'artiste",
+    artist: "Lil Nas X",
     src: "songs%20local/Light%20Again%20[Prod.%20Take%20A%20Daytrip].mp3"
   },
   {
     type: "local",
     title: "LIGHT THAT SPLIFF w／ LIL ROCKETMAN",
-    artist: "Nom de l'artiste",
+    artist: "LIL ROCKETMAN",
     src: "songs%20local/LIGHT%20THAT%20SPLIFF%20w／%20LIL%20ROCKETMAN.mp3"
   },
   {
@@ -96,19 +96,19 @@ const tracks = [
   {
     type: "local",
     title: "Lonelymeds ft. Kindro",
-    artist: "Nom de l'artiste",
+    artist: "heheheheh",
     src: "songs%20local/Lonelymeds%20ft.%20Kindro.mp3"
   },
   {
     type: "local",
     title: "Miss The Rage but it's from an alternate timeline",
-    artist: "Nom de l'artiste",
+    artist: "MaxRules",
     src: "songs%20local/Miss%20The%20Rage%20but%20it's%20from%20an%20alternate%20timeline.mp3"
   },
   {
     type: "local",
     title: "More Than Ever prod. ChaseTheMoney",
-    artist: "Nom de l'artiste",
+    artist: "LUCKI",
     src: "songs%20local/More%20Than%20Ever%20prod.%20ChaseTheMoney.mp3"
   },
   {
@@ -126,37 +126,37 @@ const tracks = [
   {
     type: "local",
     title: "Slay (prod. newrvge)",
-    artist: "Nom de l'artiste",
+    artist: "Ohtrapstar",
     src: "songs%20local/Slay%20(prod.%20newrvge).mp3"
   },
   {
     type: "local",
     title: "Taking A Walk (Prod. Scott Storch)",
-    artist: "Nom de l'artiste",
+    artist: "Trippie",
     src: "songs%20local/Taking%20A%20Walk%20(Prod.%20Scott%20Storch).mp3"
   },
   {
     type: "local",
     title: "tesla (slowed electro mix)",
-    artist: "Nom de l'artiste",
+    artist: "Fixupboy",
     src: "songs%20local/tesla%20(slowed%20electro%20mix).mp3"
   },
   {
     type: "local",
     title: "this was playing when liam crashed",
-    artist: "Nom de l'artiste",
+    artist: "xxx",
     src: "songs%20local/this%20was%20playing%20when%20liam%20crashed.mp3"
   },
   {
     type: "local",
     title: "tongue tied",
-    artist: "Nom de l'artiste",
+    artist: "Otuka",
     src: "songs%20local/tongue%20tied.mp3"
   },
   {
     type: "local",
     title: "Too Soon",
-    artist: "Nom de l'artiste",
+    artist: "Sapjer",
     src: "songs%20local/Too%20Soon.mp3"
   }
 ];
@@ -165,7 +165,7 @@ document.getElementById("recipient-name").textContent = name;
 
 // Particules flottantes en fond, purement décoratif
 const particlesEl = document.getElementById("particles");
-const PARTICLE_COUNT = 22;
+const PARTICLE_COUNT = window.innerWidth < 600 ? 10 : 22;
 
 for (let i = 0; i < PARTICLE_COUNT; i++) {
   const p = document.createElement("span");
