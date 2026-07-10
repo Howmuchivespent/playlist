@@ -1,67 +1,38 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Karma's playlist</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#141e30" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>𝔐𝔦𝔰𝔥</title>
 
-  <!-- Perf -->
-  <link rel="preconnect" href="https://www.youtube.com" crossorigin>
-  <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin>
-  <link rel="preconnect" href="https://noembed.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 
-  <!-- Styles (cache-busting up) -->
-  <link rel="stylesheet" href="CSS.css?v=8">
-
-  <!-- Favicon -->
-  <link rel="icon" href="inafont.png" type="image/png" />
-
-  <!-- Social cards -->
-  <meta property="og:title" content="Karma's playlist" />
-  <meta property="og:image" content="https://howmuchivespent.github.io/playlist/inafont.png" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://howmuchivespent.github.io/playlist/" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>100 Player's Playlist V1</h1>
-    <p class="small">
-      Thanks to everyone who participated, I really enjoyed chatting with you guys.<br />
-      Special mention to: ✦ golyubka ✦ Nina ✦ Thumbelina ✦ Ciaratta ✦ KittyKaty ✦ Mamo ✦ Lillyfee ✦ Istill ✦ Ray ✦ dragonfly ✦Catloaf✦jj✦Noirin✦Xiao✦dwed✦Rean✦<br />
-      𖤐
-    </p>
-    <div class="actions">
-      <input id="search" type="search" placeholder="Search 😎" aria-label="Search" />
-      <button id="refresh" class="btn" type="button">🔄 Refresh</button>
-      <!-- (optionnel) <button id="random" class="btn" type="button">🎲 Random</button> -->
+
+  <header class="tape-header">
+    <p class="eyebrow">a mixtape for</p>
+    <h1 id="recipient-name">toi</h1>
+    <p class="tagline">𝔉𝔬𝔯 𝔐𝔦𝔰𝔥</p>
+
+    <div class="counter" aria-hidden="true">
+      <span id="track-count">00</span>
+      <span class="counter-sep">titres</span>
+      <span class="counter-sep">·</span>
+      <span id="total-time">00:00</span>
     </div>
   </header>
 
   <main>
-    <!-- Section principale -->
-    <div class="link-list" id="links"></div>
-
-    <!-- Section amie (couleur perso) -->
-    <section class="friend">
-      <h2>Catloaf's finds<span id="friend-count" class="small"></span></h2>
-      <div class="link-list link-list--friend" id="friend-links"></div>
-    </section>
+    <ol class="tracklist" id="tracklist"></ol>
   </main>
 
-  <noscript>Active JavaScript pour charger les titres YouTube.</noscript>
-  <script src="Javascript.js?v=6" defer></script>
-  <!-- Bouton Back to top -->
-<button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">⬆️</button>
+  <footer class="tape-footer">
+    <p>fait à la main, une chanson à la fois</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
