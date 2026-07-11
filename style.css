@@ -317,7 +317,7 @@ main {
   }
 
   body::before {
-    background-size: contain;
-    background-position: top center;
+    background-size: cover;
+    background-position: top left;
   }
 }
